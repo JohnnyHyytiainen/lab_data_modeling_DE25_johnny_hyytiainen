@@ -1,0 +1,68 @@
+
+# Secrets / credentials
+.env
+.env.*
+!.env.example
+!.env.template
+
+
+# OS junk
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+
+# Editor/IDE
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.swp
+
+
+# Logs / temp
+*.log
+*.tmp
+*.bak
+*.old
+
+
+# Python (om jag råkar använda det för seed/scripts senare)
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.venv/
+venv/
+ENV/
+env/
+
+# Local databases / artifacts (inte PostgreSQL i container)
+*.sqlite
+*.sqlite3
+*.db
+*.duckdb
+*.wal
+*.journal
+
+
+# Docker / local data folders (om jag råkar skapa bind-mount mappar)
+pgdata/
+pgdata_*/
+postgres_data/
+postgres_data_*/
+data_pg/
+data_postgres/
+
+
+# Video files (labben vill ha video som länk, inte tung fil i repo)
+*.mp4
+*.mov
+*.mkv
+*.webm
+
+
+# Node (om det nånsin dyker upp)
+node_modules/
