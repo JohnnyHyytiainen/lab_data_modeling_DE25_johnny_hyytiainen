@@ -1,0 +1,15 @@
+erDiagram
+    PROGRAM }|--|{ COURSE : inkluderar
+    PROGRAM ||--|{ CLASS : har
+    FACILITY ||--|{ CLASS : hostar
+    EDUCATION_LEADER ||--|{ CLASS : ansvarar_for
+    CLASS ||--|{ STUDENT : har
+
+    %% Viktigaste fixen:
+    EDUCATOR ||--|{ TEACHING_ASSIGNMENT : har
+    CLASS    ||--|{ TEACHING_ASSIGNMENT : har
+    COURSE   ||--|{ TEACHING_ASSIGNMENT : har
+
+    %% Konsultgrejen blir meningsfull:
+    COMPANY ||--|{ CONSULTANT : anstaller
+    EDUCATOR ||--o{ CONSULTANT : kan_vara

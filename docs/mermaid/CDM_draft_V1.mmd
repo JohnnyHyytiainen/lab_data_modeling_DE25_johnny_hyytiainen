@@ -1,0 +1,37 @@
+erDiagram
+    STUDENT
+
+    UTBILDARE
+
+    UTBILDNINGSLEDARE
+    
+    KURS
+
+    PROGRAM
+    
+    KLASS
+    
+    ANLAGGNING
+    
+    KONSULT
+
+    %% Program & klasser (cohorts)
+    PROGRAM ||--|{ KLASS : har
+
+    %% Klass sker på en anläggning
+    ANLAGGNING ||--|{ KLASS : hostar
+
+    %% Utbildningsledare ansvarar för klasser
+    UTBILDNINGSLEDARE ||--|{ KLASS : ansvarar_for
+
+    %% Program består av kurser (N:M)
+    PROGRAM }|--|{ KURS : inkluderar
+
+    %% Studenter går i klass (antagande för att kunna joina)
+    KLASS ||--|{ STUDENT : har
+
+    %% Utbildare undervisar kurser (grov nivå i CDM)
+    UTBILDARE }|--|{ KURS : undervisar
+
+    %% Konsult är en typ av utbildare (kan göras som subtyp senare)
+    UTBILDARE ||--o{ KONSULT : kan_vara
