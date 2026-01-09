@@ -18,4 +18,6 @@
 
 - `den CDM ska vara överblick på 'det stora hela', inget behov för junction tables/bridge tables. N:M tillåts i CDM. LDM -> PDM == junction/bridge tables`
 
-- 
+- `Kom ihåg att lägga till relationship statements i CDM för var entitet (PÅ ENGELSKA!)`
+
+- `Kom IHÅG att ha docker-compose.yml sparad i repot för att lärare ska kunna replikera containern!`
