@@ -74,3 +74,5 @@ Entities:
 [PROGRAM]
 [KLASS]
 [ANLÄGGNING]
+[ANSTÄLLD]
+[UTBILDAR]
