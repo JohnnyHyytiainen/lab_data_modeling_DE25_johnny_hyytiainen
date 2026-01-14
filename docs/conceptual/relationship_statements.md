@@ -6,6 +6,9 @@
 - **Class–Student:**   
 `En klass har noll eller flera studenter. En student tillhör exakt en klass.`
 
+- **Class–Employee: (Utbildningsledare)**  
+`En klass administreras av exakt en anställd (Utbildningsledare). En anställd kan administrera noll eller flera klasser.`
+
 - **Program–Course:**   
 `Ett program innehåller en eller flera kurser. En kurs kan ingå i noll eller flera program (fristående kurs = 0 program)`
 
