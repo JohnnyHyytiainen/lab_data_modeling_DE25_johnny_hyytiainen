@@ -108,3 +108,26 @@ den.
 - labben är utfört på tillräcklig hög nivå med datamodell som reflekterar business requirements väl
 - implementerat alla requirements inklusive de markerade med BONUS
 - har använt sig av korrekt terminologi inom datamodelleringen
+
+
+## Notes för klarhet 2026-01-09:
+
+Lite notes från diskussioner med klassen.
+* kurser med samma namn kan ha olika poäng mellan klasserna 
+* kan vara olika kurser mellan klasserna
+* programnamn samma och samma poäng på programmet (ex 400p på data engineer)
+
+
+
+Tycker ni att någon businesskrav inte är tydligt nog så kan ni byta ut det, bara ni skriver det i ex README.md
+
+ex: 
+istället för: "program har ett antal kurser knutna till sig"
+ersätt med: "en klass har ett antal kurser knutna till sig"
+
+relationship statement
+* En Klass har en eller flera Studenter
+
+angående språk
+ni får välja engelska eller svenska men var konsekvent 
+videopitch kan vara engelska eller svenska, behöver inte vara samma som ni valt innan
