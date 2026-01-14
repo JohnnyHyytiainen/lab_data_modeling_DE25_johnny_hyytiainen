@@ -1,0 +1,24 @@
+erDiagram
+  FACILITY ||--o{ KLASS : houses
+  KLASS ||--o{ STUDENT : has
+
+  PROGRAM o|--o{ KLASS : has   
+  PROGRAM }o--o{ COURSE : contains  
+  KLASS ||--o{ TEACHING_ASSIGNMENT : has
+  COURSE ||--o{ TEACHING_ASSIGNMENT : includes
+  EDUCATOR ||--o{ TEACHING_ASSIGNMENT : teaches
+
+  PERSON ||--o| PERSON_SENSITIVE : contains
+
+  PERSON ||--o| STUDENT : role
+  PERSON ||--o| EMPLOYEE : role
+  PERSON ||--o| EDUCATOR : role
+
+  EDUCATOR ||--o| CONSULTANT : "hired to be"
+  
+  CONSULTANT_COMPANY ||--o{ CONSULTANT : provides
+
+  KLASS }o--|| EMPLOYEE : "managed by"
+
+
+  EMPLOYEE |o--|| EDUCATOR :  "can be a"
