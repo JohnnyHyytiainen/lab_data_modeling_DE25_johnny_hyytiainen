@@ -1,0 +1,126 @@
+erDiagram
+    %% --- Entities ---
+    FACILITY {
+        int facility_id PK
+        str name
+        str city
+        varchar postal_code "UNIQUE"
+        str address
+        int capacity
+        str room_rype
+        bool hc_accessible
+    }
+    KLASS {
+        int class_id PK
+        varchar(20) class_code "UNIQUE"
+        int facility_id "FK, NOT NULL"
+        varchar(20) program_id "FK, NULLABLE"
+        int managed_by_employee_id "FK, NOT NULL"
+        int cohort_number
+        date start_date "NOT NULL"
+        date end_date
+        bool is_distance "DEFAULT FALSE"
+}
+    PROGRAM {
+        varchar program_id PK
+        varchar program_code "UNIQUE"
+        varchar program_name
+        int points_total
+        int decision_number
+    }
+
+    PROGRAM_COURSE {
+        varchar program_id "PK, FK"
+        int course_id "PK, FK"
+        varchar semester_number
+        }
+
+    COURSE {
+        varchar course_id PK
+        varchar course_code "UNIQUE"
+        str course_name
+        str course_description
+        int course_points
+
+    }
+    TEACHING_ASSIGNMENT {
+        int teaching_assignment_id PK
+        int class_id "FK, NOT NULL"
+        INT course_id "FK, NOT NULL" 
+        int educator_person_id "FK, NOT NULL"
+        datetime start_date
+        datetime end_date
+        varchar term
+    }
+
+    EDUCATOR {
+        int person_id "PK, FK person(person_id)"
+        str competence_area
+    }
+
+    CONSULTANT {
+        int person_id "PK, FK educator(person_id)"
+        varchar consultant_company_id "FK, not null"
+        int hourly_rate
+    }
+
+    CONSULTANT_COMPANY {
+        varchar consultant_company_id PK
+        varchar org_number "UNIQUE"
+        str name
+        bool has_f_skatt
+        str address
+    }
+
+    EMPLOYEE {
+        varchar person_id "PK, FK person(person_id)"
+        str title
+        varchar employee_nr "UNIQUE"
+        int employee_salary "not null"
+        varchar employment_type "not null"
+    }
+
+    STUDENT {
+        int person_id "PK, FK person(person_id)"
+        varchar klass_id "FK, not null"
+    }
+
+    PERSON {
+        int person_id PK
+        str first_name
+        str last_name
+        varchar email "UNIQUE"
+    }
+
+    PERSON_SENSITIVE {
+        int person_id "PK, FK person(person_id)"
+        varchar personal_number "UNIQUE"
+        varchar private_email
+        str home_address
+        varchar phone_number
+    }
+
+    %% --- Relationships ---
+    PERSON ||--o| PERSON_SENSITIVE : "PK FK, secure details"
+    PERSON ||--o| STUDENT : "PK FK, role"
+    PERSON ||--o| EMPLOYEE : "PK FK, role"
+    PERSON ||--o| EDUCATOR : "PK FK, role"
+
+    EDUCATOR ||--o| CONSULTANT : "can be"
+    CONSULTANT_COMPANY ||--o{ CONSULTANT : employs
+
+    KLASS ||--o{ TEACHING_ASSIGNMENT : "via employee - person - educator"
+    COURSE ||--o{ TEACHING_ASSIGNMENT : "via program_course - program"
+    EDUCATOR ||--o{ TEACHING_ASSIGNMENT : performs
+
+
+    KLASS ||--o{ STUDENT : has
+    %% Class Management (Admin)
+    KLASS }o--|| EMPLOYEE : "managed by"
+
+    %% Program & Class & Course
+    PROGRAM |o--o{ KLASS : "curriculum used by"
+    PROGRAM ||--o{ PROGRAM_COURSE : contains
+    PROGRAM_COURSE }o--|| COURSE : "junction_to_program"
+    
+    FACILITY ||--o{ KLASS : houses
