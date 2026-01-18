@@ -1,0 +1,121 @@
+// ==========================================
+// YrkesCo Physical Data Model (MVP Version)
+// Focus: Stable Structure & Core Integrity
+// Version: Finalized V1.0 (Without Regex & Check Constraints)
+// Dialect: PostgreSQL
+// ==========================================
+
+Table facility {
+  facility_id integer [pk, increment]
+  name varchar(100) [not null]
+  city varchar(50) [not null]
+  postal_code varchar(20)
+  address varchar(200)
+  capacity integer [note: 'CHECK(capacity > 0)']
+  room_type varchar(50)
+  hc_accessible boolean [default: false]
+}
+
+Table class {
+  class_id integer [pk, increment]
+  class_code varchar(20) [unique, not null]
+  facility_id integer [not null, ref: > facility.facility_id]
+  program_id varchar(20) [null, ref: > program.program_id]
+  managed_by_employee_person_id integer [not null, ref: > employee.person_id]
+  cohort_number integer
+  start_date date [not null]
+  end_date date [note: 'CHECK(end_date IS NULL OR end_date > start_date)']
+  is_distance boolean [default: false]
+}
+
+Table program {
+  program_id varchar(20) [pk]
+  program_code varchar(20) [unique, not null]
+  program_name varchar(100) [not null]
+  points_total integer [note: 'CHECK(points_total > 0)']
+  decision_number integer [not null]
+}
+
+Table program_course {
+  program_id varchar(20) [not null, ref: > program.program_id]
+  course_id varchar(20) [not null, ref: > course.course_id]
+  semester_number integer [note: 'CHECK(semester_number BETWEEN 1 AND 6)']
+
+  indexes {
+    (program_id, course_id) [pk]
+  }
+}
+
+Table course {
+  course_id varchar(20) [pk]
+  course_code varchar(20) [unique, not null]
+  course_name varchar(100) [not null]
+  course_description text
+  course_points integer [note: 'CHECK(course_points > 0)']
+}
+
+Table teaching_assignment {
+  teaching_assignment_id integer [pk, increment]
+  class_id integer [not null, ref: > class.class_id]
+  course_id varchar(20) [not null, ref: > course.course_id]
+  educator_person_id integer [not null, ref: > educator.person_id]
+  start_date date [not null]
+  end_date date [note: 'CHECK(end_date IS NULL OR end_date > start_date)']
+  term varchar(20) [not null, note: "CHECK(term IN ('HT', 'VT'))"]
+
+  indexes {
+    (class_id, course_id, educator_person_id) [unique]
+  }
+}
+
+// ==========================================
+// The Person Hierarchy
+// ==========================================
+
+Table person {
+  person_id integer [pk, increment] // SERIAL
+  first_name varchar(50) [not null]
+  last_name varchar(50) [not null]
+  email varchar(100) [unique, not null]
+  created_at timestamptz [default: `now()`]
+}
+
+Table person_sensitive {
+  person_id integer [pk, ref: > person.person_id] // FK
+  personal_number varchar(13) [unique, not null]
+  private_email varchar(100)
+  home_address varchar(200)
+  phone_number varchar(15)
+}
+
+Table student {
+  person_id integer [pk, ref: > person.person_id] // FK
+  class_id integer [not null, ref: > class.class_id]
+}
+
+Table employee {
+  person_id integer [pk, ref: > person.person_id] // FK
+  title varchar(100)
+  employee_nr varchar(20) [unique, not null]
+  employee_salary decimal(10,2) [not null, note: 'CHECK(employee_salary > 0)']
+  employment_type varchar(20) [not null]
+}
+
+Table educator {
+  person_id integer [pk, ref: > person.person_id] // FK
+  competence_area varchar(100) [not null]
+}
+
+Table consultant {
+  person_id integer [pk, ref: > educator.person_id] // FK
+  consultant_company_id integer [not null, ref: > consultant_company.consultant_company_id]
+  hourly_rate decimal(10,2) [not null, note: 'CHECK(hourly_rate > 0)']
+}
+
+Table consultant_company {
+  consultant_company_id integer [pk, increment]
+  org_number varchar(11) [unique, not null]
+  name varchar(100) [not null]
+  has_f_skatt boolean [default: false]
+  address varchar(200)
+}
