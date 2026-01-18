@@ -23,10 +23,10 @@ erDiagram
         varchar(20) class_code "UNIQUE, NOT NULL"
         int facility_id "FK, NOT NULL"
         varchar(20) program_id "FK, NULLABLE"
-        int managed_by_employee_id "FK, NOT NULL"
+        int managed_by_employee_person_id "FK, NOT NULL"
         int cohort_number
         date start_date "NOT NULL"
-        date end_date "CHECK(end_date > start_date)"
+        date end_date "NULLABLE, CHECK(end_date IS NULL OR end_date > start_date)"
         bool is_distance "DEFAULT FALSE"
         }
 
@@ -63,15 +63,16 @@ erDiagram
 
     %% ========================================
     %% TEACHING_ASSIGNMENT (Ternary relationship)
+    %% Constraint: UNIQUE(class_id, course_id, educator_person_id)
     %% ========================================
     TEACHING_ASSIGNMENT {
         int teaching_assignment_id "PK"
         int class_id "FK, NOT NULL"
         varchar(20) course_id "FK, NOT NULL" 
         int educator_person_id "FK, NOT NULL"
-        date start_date
-        date end_date
-        varchar(20) term "CHECK(term IN ('HT', 'VT'))"
+        date start_date "NOT NULL"
+        date end_date "NULLABLE, CHECK(end_date IS NULL OR end_date > start_date)"
+        varchar(20) term "NOT NULL, CHECK(term IN ('HT','VT'))"
     }
 
     %% ========================================
@@ -109,7 +110,7 @@ erDiagram
         int person_id "PK, FK person(person_id)"
         varchar(100) title
         varchar(20) employee_nr "UNIQUE, NOT NULL"
-        decimal employee_salary "NOT NULL, CHECK(SALARY > 0)"
+        decimal employee_salary "NOT NULL, CHECK(employee_salary > 0)"
         varchar(20) employment_type "NOT NULL"
     }
 
