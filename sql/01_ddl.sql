@@ -46,7 +46,7 @@ CREATE TABLE course (
     course_code         VARCHAR(20) UNIQUE NOT NULL,
     course_name         VARCHAR(100) NOT NULL,
     course_description  TEXT,
-    course_points       INT CHECK (course_points IS NULL OR course_points > o)
+    course_points       INT CHECK (course_points IS NULL OR course_points > 0)
 );
 
 -- =========================
