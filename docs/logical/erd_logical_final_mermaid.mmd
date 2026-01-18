@@ -1,6 +1,4 @@
 erDiagram
-    %% --- Entities ---
-
     %% ========================================
     %% FACILITY (Anläggning)
     %% ========================================
@@ -8,13 +6,12 @@ erDiagram
         int facility_id PK
         varchar(100) name "NOT NULL"
         varchar(50) city "NOT NULL"
-        varchar(20) postal_code
+        varchar(20) postal_code "NOT NULL, CHECK(postal_code ~ '^\d{3} \d{2}$')"
         varchar(200) address
         int capacity "CHECK(capacity > 0)"
         varchar(50) room_type
         bool hc_accessible "DEFAULT FALSE"
     }
-
     %% ========================================
     %% CLASS (Klass/Cohort)
     %% ========================================
@@ -29,7 +26,6 @@ erDiagram
         date end_date "NULLABLE, CHECK(end_date IS NULL OR end_date > start_date)"
         bool is_distance "DEFAULT FALSE"
         }
-
     %% ========================================
     %% PROGRAM (Utbildningsprogram)
     %% ========================================
@@ -40,7 +36,6 @@ erDiagram
         int points_total "CHECK(points_total > 0)"
         int decision_number "NOT NULL"
     }
-
     %% ========================================
     %% PROGRAM_COURSE (Junction N:M)
     %% ========================================
@@ -49,7 +44,6 @@ erDiagram
         varchar(20) course_id "PK, FK"
         int semester_number "CHECK(semester_number BETWEEN 1 AND 6)"
         }
-
     %% ========================================
     %% COURSE (Kurs)
     %% ========================================
@@ -60,7 +54,6 @@ erDiagram
         text course_description
         int course_points "CHECK(course_points > 0)"
     }
-
     %% ========================================
     %% TEACHING_ASSIGNMENT (Ternary relationship)
     %% Constraint: UNIQUE(class_id, course_id, educator_person_id)
@@ -74,7 +67,6 @@ erDiagram
         date end_date "NULLABLE, CHECK(end_date IS NULL OR end_date > start_date)"
         varchar(20) term "NOT NULL, CHECK(term IN ('HT','VT'))"
     }
-
     %% ========================================
     %% EDUCATOR (Subtype of Person)
     %% ========================================
@@ -82,7 +74,6 @@ erDiagram
         int person_id "PK, FK person(person_id)"
         varchar(100) competence_area "NOT NULL"
     }
-
     %% ========================================
     %% CONSULTANT (Subtype of Educator)
     %% ========================================
@@ -91,18 +82,16 @@ erDiagram
         int consultant_company_id "FK, not null"
         decimal hourly_rate "NOT NULL, CHECK(hourly_rate > 0)"
     }
-
     %% ========================================
     %% CONSULTANT_COMPANY
     %% ========================================
     CONSULTANT_COMPANY {
         int consultant_company_id "PK"
-        varchar(11) org_number "UNIQUE, NOT NULL"
+        varchar(11) org_number "UNIQUE, NOT NULL, CHECK(org_number ~ '^\d{6}-\d{4}$')"
         varchar(100) name "NOT NULL"
         bool has_f_skatt "DEFAULT FALSE"
         varchar(200) address
     }
-
     %% ========================================
     %% EMPLOYEE (Subtype of Person)
     %% ========================================
@@ -113,7 +102,6 @@ erDiagram
         decimal employee_salary "NOT NULL, CHECK(employee_salary > 0)"
         varchar(20) employment_type "NOT NULL"
     }
-
     %% ========================================
     %% STUDENT (Subtype of Person)
     %% ========================================
@@ -121,7 +109,6 @@ erDiagram
         int person_id "PK, FK person(person_id)"
         int klass_id "FK, not null"
     }
-
     %% ========================================
     %% PERSON (Supertype)
     %% ========================================
@@ -129,10 +116,9 @@ erDiagram
         int person_id PK
         varchar(50) first_name "NOT NULL"
         varchar(50) last_name "NOT NULL"
-        varchar(100) email "UNIQUE"
+        varchar(100) email "UNIQUE, NOT NULL, CHECK(email ~ '^[^@]+@[^@]+\.[^@]+$')"
         timestamptz created_at "DEFAULT NOW()"
     }
-
     %% ========================================
     %% PERSON_SENSITIVE (GDPR-protected)
     %% ========================================
@@ -143,28 +129,21 @@ erDiagram
         varchar(200) home_address
         varchar(15) phone_number
     }
-
     %% --- Relationships ---
     PERSON ||--o| PERSON_SENSITIVE : "PK FK, secure details"
     PERSON ||--o| STUDENT : "PK FK, role"
     PERSON ||--o| EMPLOYEE : "PK FK, role"
     PERSON ||--o| EDUCATOR : "PK FK, role"
-
     EDUCATOR ||--o| CONSULTANT : "can be"
     CONSULTANT_COMPANY ||--o{ CONSULTANT : employs
-
     KLASS ||--o{ TEACHING_ASSIGNMENT : "via employee - person - educator"
     COURSE ||--o{ TEACHING_ASSIGNMENT : "via program_course - program"
     EDUCATOR ||--o{ TEACHING_ASSIGNMENT : performs
-
-
     KLASS ||--o{ STUDENT : has
     %% Class Management (Admin)
     KLASS }o--|| EMPLOYEE : "managed by"
-
     %% Program & Class & Course
     PROGRAM |o--o{ KLASS : "curriculum used by"
     PROGRAM ||--o{ PROGRAM_COURSE : contains
     PROGRAM_COURSE }o--|| COURSE : "junction_to_program"
-    
     FACILITY ||--o{ KLASS : houses

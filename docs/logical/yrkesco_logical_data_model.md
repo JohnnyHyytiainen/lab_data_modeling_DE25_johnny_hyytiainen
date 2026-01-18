@@ -57,7 +57,15 @@ För att kunna hantera dataintegriteten kring personer och roller så valde jag 
   - I `program_course` som är en junction table är attributen `semester_number` fullt beroende av **hela** den sammansatta nyckeln och inte bara en **del** av den.  
 
   - 3NF (Transitive Dependencies - Transitiva beroenden).  
+  - Min modell eliminerar transitiva beroenden genom följande design:  
 
+    - **Exempel 1:** city och address finns i `FACILITY` inte i `CLASS`.  
+      - **Varför?** `City` beror på `facility_id` inte `class_id`. Om jag hade `class.city` skulle det vara ett transitivt beroende `(class -> facility -> city)`  
+    
+    - **Exempel 2:** `employee_salary` finns i `EMPLOYEE` och inte i `PERSON`
+      - **Varför?** `Salary` beror på `employment` och inte på att vara `person`. En `person` kan vara `student` (dvs, ingen `salary`) eller `consultant` och har då en `hourly_rate` istället.
+
+    - **Exempel 3:** `hourly_rate` finns i `CONSULTANT` och inte i `EDUCATOR`
+      - **Varför?** `hourly_rate` är specifikt för konsulter. Anställda (fast anställda, timanställda, vikarier etc) `educators` har `employee_salary` istället.  
 
   - Attributer som inte är nycklar är enbart beroende av **primärnyckeln(PK)**. T.ex `employee_salary` ligger i `employee` entiteten(tabellen) och är beroende av `employee`(anställningstabellen) och inte utav `person` entiteten(tabellen). `city` ligger i `facility` entiteten(tabellen) och inte i `class`. Den känsliga datan i databasen finns i `person_sensitive` entiteten(tabellen), detta fär att isolera beroendet och öka säkerheten av känslig data för att ej bryta mot **dataskyddsförordningen(GDPR)**. 
-
