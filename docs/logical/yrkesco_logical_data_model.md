@@ -69,3 +69,17 @@ För att kunna hantera dataintegriteten kring personer och roller så valde jag 
       - **Varför?** `hourly_rate` är specifikt för konsulter. Anställda (fast anställda, timanställda, vikarier etc) `educators` har `employee_salary` istället.  
 
   - Attributer som inte är nycklar är enbart beroende av **primärnyckeln(PK)**. T.ex `employee_salary` ligger i `employee` entiteten(tabellen) och är beroende av `employee`(anställningstabellen) och inte utav `person` entiteten(tabellen). `city` ligger i `facility` entiteten(tabellen) och inte i `class`. Den känsliga datan i databasen finns i `person_sensitive` entiteten(tabellen), detta fär att isolera beroendet och öka säkerheten av känslig data för att ej bryta mot **dataskyddsförordningen(GDPR)**. 
+
+
+## Business Rule: Student-Klass tilldelning
+
+**Designbeslut:** `student.class_id` är NOT NULL enligt business rule.
+
+**Resonemang:**
+- YrkesCo registrerar endast studenter när en klass är bekräftad (minimikvot uppfylld)
+- Sökande utan klasstilldelning lagras endast i `person` tabellen.
+- När klass skapas --> blir sökande `student` poster med direkt FK.
+
+**Alternativ för utveckling:** `STUDENT_CLASS` junction för registreringshistorik.
+- **Avvisad tillfälligt för MVP:** Lägger till komplexitet utan aktuellt affärsbehov
+- **Framtida förbättringar:** Om YrkesCo implementerar klassöverföringar eller registrering av flera klasser
