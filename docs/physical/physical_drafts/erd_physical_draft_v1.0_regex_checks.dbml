@@ -1,0 +1,147 @@
+// ==========================================
+// YrkesCo Physical Data Model (PDM)
+// Version: Draft 1.5 (With Regex & Check Constraints)
+// Dialect: PostgreSQL
+// ==========================================
+
+Table facility {
+  facility_id integer [pk, increment]
+  name varchar(100) [not null]
+  city varchar(50) [not null]
+  // Regex: 3 digits, space, 2 digits (Swedish Format)
+  postal_code varchar(20) [not null, note: "CHECK(postal_code ~ '^\\d{3} \\d{2}$')"]
+  address varchar(200)
+  capacity integer [note: 'CHECK(capacity > 0)']
+  room_type varchar(50)
+  hc_accessible boolean [default: false]
+}
+
+Table class {
+  class_id integer [pk, increment]
+  class_code varchar(20) [unique, not null]
+  facility_id integer [not null]
+  program_id varchar(20) [null]
+  managed_by_employee_person_id integer [not null]
+  cohort_number integer
+  start_date date [not null]
+  end_date date [note: 'CHECK(end_date IS NULL OR end_date > start_date)']
+  is_distance boolean [default: false]
+}
+
+Table program {
+  program_id varchar(20) [pk]
+  program_code varchar(20) [unique, not null]
+  program_name varchar(100) [not null]
+  points_total integer [note: 'CHECK(points_total > 0)']
+  decision_number integer [not null]
+}
+
+Table program_course {
+  program_id varchar(20) [not null]
+  course_id varchar(20) [not null]
+  semester_number integer [note: 'CHECK(semester_number BETWEEN 1 AND 6)']
+
+  indexes {
+    (program_id, course_id) [pk]
+  }
+}
+
+Table course {
+  course_id varchar(20) [pk]
+  course_code varchar(20) [unique, not null]
+  course_name varchar(100) [not null]
+  course_description text
+  course_points integer [note: 'CHECK(course_points > 0)']
+}
+
+Table teaching_assignment {
+  teaching_assignment_id integer [pk, increment]
+  class_id integer [not null]
+  course_id varchar(20) [not null]
+  educator_person_id integer [not null]
+  start_date date [not null]
+  end_date date [note: 'CHECK(end_date IS NULL OR end_date > start_date)']
+  term varchar(20) [not null, note: "CHECK(term IN ('HT', 'VT'))"]
+
+  indexes {
+    (class_id, course_id, educator_person_id) [unique]
+  }
+}
+
+// ==========================================
+// The Person Hierarchy (Shared PKs)
+// ==========================================
+
+Table person {
+  person_id integer [pk, increment] // SERIAL
+  first_name varchar(50) [not null]
+  last_name varchar(50) [not null]
+  // Regex: Basic email validation
+  email varchar(100) [unique, not null, note: "CHECK(email ~ '^[^@]+@[^@]+\\.[^@]+$')"]
+  created_at timestamptz [default: `now()`]
+}
+
+Table person_sensitive {
+  person_id integer [pk] // FK to person
+  personal_number varchar(13) [unique, not null]
+  private_email varchar(100)
+  home_address varchar(200)
+  phone_number varchar(15)
+}
+
+Table student {
+  person_id integer [pk] // FK to person
+  class_id integer [not null]
+}
+
+Table employee {
+  person_id integer [pk] // FK to person
+  title varchar(100)
+  employee_nr varchar(20) [unique, not null]
+  employee_salary decimal(10,2) [not null, note: 'CHECK(employee_salary > 0)']
+  employment_type varchar(20) [not null]
+}
+
+Table educator {
+  person_id integer [pk] // FK to person
+  competence_area varchar(100) [not null]
+}
+
+Table consultant {
+  person_id integer [pk] // FK to Educator
+  consultant_company_id integer [not null]
+  hourly_rate decimal(10,2) [not null, note: 'CHECK(hourly_rate > 0)']
+}
+
+Table consultant_company {
+  consultant_company_id integer [pk, increment]
+  // Regex: Swedish Org Nr (XXXXXX-XXXX)
+  org_number varchar(11) [unique, not null, note: "CHECK(org_number ~ '^\\d{6}-\\d{4}$')"]
+  name varchar(100) [not null]
+  has_f_skatt boolean [default: false]
+  address varchar(200)
+}
+
+// ==========================================
+// Relationships
+// ==========================================
+
+Ref: person.person_id - person_sensitive.person_id
+Ref: person.person_id - student.person_id
+Ref: person.person_id - employee.person_id
+Ref: person.person_id - educator.person_id
+Ref: educator.person_id - consultant.person_id
+
+Ref: facility.facility_id < class.facility_id
+Ref: employee.person_id < class.managed_by_employee_person_id
+Ref: program.program_id < class.program_id
+Ref: class.class_id < student.class_id
+
+Ref: program.program_id < program_course.program_id
+Ref: course.course_id < program_course.course_id
+
+Ref: class.class_id < teaching_assignment.class_id
+Ref: course.course_id < teaching_assignment.course_id
+Ref: educator.person_id < teaching_assignment.educator_person_id
+
+Ref: consultant_company.consultant_company_id < consultant.consultant_company_id
