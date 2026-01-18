@@ -55,7 +55,7 @@ postgres_data/
 postgres_data_*/
 data_pg/
 data_postgres/
-
+docker/.env
 
 # Video files (labben vill ha video som länk, inte tung fil i repo)
 *.mp4
