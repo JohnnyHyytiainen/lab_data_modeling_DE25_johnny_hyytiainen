@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:16
-    container_name: lab_yrkesco_postgrescl
+    container_name: lab_yrkesco_postgres
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
