@@ -79,3 +79,55 @@ FROM course cr
 LEFT JOIN program_course pc ON pc.course_id = cr.course_id
 WHERE pc.course_id IS NULL
 ORDER BY cr.course_code;
+
+
+-- 5) Utb ledare/klass admin har hand om klasser (visar admins klasser)
+-- INNER JOIN
+SELECT
+  p.first_name, 
+  p.last_name, 
+  emp.employee_nr,
+  COUNT(*) AS classes_managed
+FROM class c
+JOIN employee emp ON emp.person_id = c.managed_by_employee_person_id
+JOIN person p ON p.person_id = emp.person_id
+GROUP BY p.first_name, p.last_name, emp.employee_nr
+ORDER BY classes_managed DESC, emp.employee_nr;
+
+-- 5.5) Utb ledare/klass admin har hand om 3 klasser (räkna klasser per admin)
+-- NOTE i seed datan har Alex hand om 4 klasser(inklusive fristående FREE-01)
+SELECT
+  p.first_name, p.last_name, emp.employee_nr,
+  COUNT(*) AS classes_managed
+FROM class c
+JOIN employee emp ON emp.person_id = c.managed_by_employee_person_id
+JOIN person p ON p.person_id = emp.person_id
+GROUP BY p.first_name, p.last_name, emp.employee_nr
+HAVING COUNT(*) >= 3
+ORDER BY classes_managed DESC, emp.employee_nr;
+
+-- 6) Teaching assignments(undervisningstillfällen) per klass. Vilka utbildare undervisar vilka kurser
+-- INNER JOIN
+SELECT
+  c.class_code,
+  cr.course_code,
+  cr.course_name,
+  p.first_name || ' ' || p.last_name AS educator_name,
+  ta.term,
+  ta.start_date
+FROM teaching_assignment ta
+JOIN class c ON c.class_id = ta.class_id
+JOIN course cr ON cr.course_id = ta.course_id
+JOIN person p ON p.person_id = ta.educator_person_id
+ORDER BY c.class_code, ta.start_date;
+
+
+-- 6.5) Teaching assignments(undervisningstillfällen). Antal kurser
+SELECT 
+  c.class_code, 
+  COUNT(DISTINCT ta.course_id) AS num_courses
+FROM 
+  teaching_assignment ta
+JOIN class c ON c.class_id = ta.class_id
+GROUP BY c.class_code
+ORDER BY c.class_code;
