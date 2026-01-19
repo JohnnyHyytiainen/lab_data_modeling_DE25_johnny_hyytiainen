@@ -29,6 +29,7 @@ ORDER BY c.class_code, p.last_name;
 
 -- 2) Utbildare och om de är konsult + företag (POSTGRESQL variant)
 -- INNER + LEFT JOIN
+\echo '----- Query 2) Educators + consultant status (IS NOT NULL) -----'
 SELECT
   p.first_name, p.last_name, e.competence_area,
   (co.person_id IS NOT NULL) AS is_consultant,
@@ -42,6 +43,7 @@ ORDER BY is_consultant DESC, p.last_name;
 
 -- 2.5) Utbildare och om de är konsult + företag (Standard SQL CASE WHEN .... ELSE .... END variant)
 -- INNER + LEFT JOIN
+\echo '----- Query 2.5) Educators + consultant status (CASE WHEN) -----'
 SELECT
   p.first_name,
   p.last_name,
@@ -96,6 +98,7 @@ ORDER BY classes_managed DESC, emp.employee_nr;
 
 -- 5.5) Utb ledare/klass admin har hand om 3 klasser (räkna klasser per admin)
 -- NOTE i seed datan har Alex hand om 4 klasser(inklusive fristående FREE-01)
+\echo '----- Query 5.5) Alex is class manager for 3 PROGRAMS and 1 Standalone course. -----'
 SELECT
   p.first_name, p.last_name, emp.employee_nr,
   COUNT(*) AS classes_managed
@@ -105,6 +108,19 @@ JOIN person p ON p.person_id = emp.person_id
 GROUP BY p.first_name, p.last_name, emp.employee_nr
 HAVING COUNT(*) >= 3
 ORDER BY classes_managed DESC, emp.employee_nr;
+
+-- 5.6) Utb ledare/klass admin för PROGRAM klasser (ignorera fristående kurser)
+\echo '----- Query 5.6) query to ONLY show PROGRAM admins. -----'
+SELECT
+  p.first_name, p.last_name, emp.employee_nr,
+  COUNT(*) AS program_classes_managed
+FROM class c
+JOIN employee emp ON emp.person_id = c.managed_by_employee_person_id
+JOIN person p ON p.person_id = emp.person_id
+WHERE c.program_id IS NOT NULL
+GROUP BY p.first_name, p.last_name, emp.employee_nr
+HAVING COUNT(*) = 3;
+
 
 -- 6) Teaching assignments(undervisningstillfällen) per klass. Vilka utbildare undervisar vilka kurser
 -- INNER JOIN
