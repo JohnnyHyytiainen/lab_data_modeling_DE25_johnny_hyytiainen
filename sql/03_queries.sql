@@ -27,7 +27,7 @@ WHERE c.class_code = 'DE25-01'
 ORDER BY c.class_code, p.last_name;
 
 
--- 2) Utbildare och om de är konsult + företag
+-- 2) Utbildare och om de är konsult + företag (POSTGRESQL variant)
 -- INNER + LEFT JOIN
 SELECT
   p.first_name, p.last_name, e.competence_area,
@@ -39,3 +39,43 @@ JOIN person p ON p.person_id = e.person_id
 LEFT JOIN consultant co ON co.person_id = e.person_id
 LEFT JOIN consultant_company cc ON cc.consultant_company_id = co.consultant_company_id
 ORDER BY is_consultant DESC, p.last_name;
+
+-- 2.5) Utbildare och om de är konsult + företag (Standard SQL CASE WHEN .... ELSE .... END variant)
+-- INNER + LEFT JOIN
+SELECT
+  p.first_name,
+  p.last_name,
+  e.competence_area,
+  CASE
+    WHEN co.person_id IS NOT NULL THEN TRUE
+    ELSE FALSE
+  END AS is_consultant,
+  cc.name AS consultant_company,
+  co.hourly_rate
+FROM educator e
+JOIN person p ON p.person_id = e.person_id
+LEFT JOIN consultant co ON co.person_id = e.person_id
+LEFT JOIN consultant_company cc ON cc.consultant_company_id = co.consultant_company_id
+ORDER BY is_consultant DESC, p.last_name;
+
+-- 3) Program → kurser (termin)
+-- INNER JOIN
+SELECT
+  pr.program_code,
+  pc.semester_number,
+  cr.course_code,
+  cr.course_name,
+  cr.course_points
+FROM program_course pc
+JOIN program pr ON pr.program_id = pc.program_id
+JOIN course cr ON cr.course_id = pc.course_id
+ORDER BY pr.program_code, pc.semester_number;
+
+-- 4) Fristående kurser (kurser som inte ingår i något program)
+-- LEFT JOIN
+SELECT cr.course_code, 
+cr.course_name
+FROM course cr
+LEFT JOIN program_course pc ON pc.course_id = cr.course_id
+WHERE pc.course_id IS NULL
+ORDER BY cr.course_code;
