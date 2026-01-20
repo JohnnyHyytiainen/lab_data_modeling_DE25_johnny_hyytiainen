@@ -65,6 +65,13 @@ FROM person
 WHERE email = 'eva.educator@yrkesco.se'
 ON CONFLICT (person_id) DO NOTHING;
 
+-- Eva = (fast anställd lärare) (educator + employee)
+INSERT INTO employee (person_id, title, employee_nr, employee_salary, employment_type)
+SELECT p.person_id, 'Utbildare', 'EMP-0002', 45000, 'tillsvidare'
+FROM person p
+WHERE p.email = 'eva.educator@yrkesco.se'
+ON CONFLICT (person_id) DO NOTHING;
+
 INSERT INTO person (first_name, last_name, email)
 VALUES ('Conny', 'Consultant', 'conny.consultant@external.se')
 ON CONFLICT (email) DO NOTHING;
