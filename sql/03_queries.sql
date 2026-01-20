@@ -217,7 +217,7 @@ ORDER BY c.class_code, ta.start_date;
 -- ==========================================
 \echo ''
 \echo '================================='
-\echo 'Query 6B: Teachin Assignments'
+\echo 'Query 6B: Teaching Assignments'
 \echo 'Purpose: Linking number of Courses a Specific Program or Class has.'
 \echo '================================='
 SELECT 
