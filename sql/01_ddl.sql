@@ -1,3 +1,8 @@
+-- Failsafe, FAIL FAST. 
+-- Kill everything at first issue (works well with DROP TABLE IF EXISTS .... CASCADE)
+-- NOTE: Be sure to NOT use DROP TABLE .... with this command. Be sure to use DROP TABLE IF EXISTS.
+\set ON_ERROR_STOP on
+
 BEGIN;
 -- Reset (safe for reruns)
 DROP TABLE IF EXISTS teaching_assignment CASCADE;

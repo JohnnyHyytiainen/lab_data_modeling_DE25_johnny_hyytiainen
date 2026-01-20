@@ -1,3 +1,8 @@
+-- Failsafe, FAIL FAST. 
+-- Kill everything at first issue (works well with DROP TABLE IF EXISTS .... CASCADE)
+-- NOTE: Be sure to NOT use DROP TABLE .... with this command. Be sure to use DROP TABLE IF EXISTS.
+\set ON_ERROR_STOP on
+
 -- ==========================================
 -- Q-1A. Student overview. Students + Class + Program + location(ort)
 -- JOIN(INNER) + LEFT JOIN + ORDER BY(Sorting)
