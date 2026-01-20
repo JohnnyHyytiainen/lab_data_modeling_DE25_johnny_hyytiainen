@@ -1,5 +1,21 @@
 # "Runbook" (playbook) for docker. My easy go to commands in mini-format.
 
+## 0) Check status on stack:  
+- `docker compose -f docker/docker-compose.yml --env-file docker/.env ps`  
+
+## 0) Check logs:  
+- `docker logs -f lab_yrkesco_postgres`  
+
+## 0) Stop the stack:  
+- `docker compose -f docker/docker-compose.yml --env-file docker/.env down`  
+
+## 0) Nuke and reboot (new DB form scratch IF NEEDED):  
+**NOTE THAT THE DATA WILL BE REMOVED!!**
+- `docker compose -f docker/docker-compose.yml --env-file docker/.env down -v`  
+
+**This command removes the volume. THE ENTIRE VOLUME. DATA INCLUDED. BE AWARE**  
+
+
 ## 1) Skapa och starta containern (om den inte redan är igång och kör)
 - `docker compose -f docker/docker-compose.yml --env-file docker/.env up -d`  
 
@@ -14,7 +30,9 @@
 - `docker exec -it lab_yrkesco_postgres psql -U <USERNAME> -d yrkesco_db -f /sql/02_seed.sql`  
 
 **För att BYPASSA Git Bash path issues**  
-- `docker exec -it lab_yrkesco_postgres bash -lc "psql -U <USERNAME> -d yrkesco_db -f /sql/02_seed.sql"`
+- `docker exec -it lab_yrkesco_postgres bash -lc "psql -U <USERNAME> -d yrkesco_db -f /sql/02_seed.sql"`  
+
+- `docker exec -it lab_yrkesco_postgres bash -lc "psql -U \$POSTGRES_USER -d \$POSTGRES_DB -f /sql/02_seed.sql"`
 
 **Alternativt om du vill gå in manuellt i containern och köra**  
 - `docker exec -it lab_yrkesco_postgres bash`  
