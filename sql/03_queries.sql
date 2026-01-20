@@ -43,13 +43,13 @@ ORDER BY c.class_code, p.last_name;
 
 
 -- ==========================================
--- Q-2A. Educator, Consultant and Company query (POSTGRESQL SPECIFIC variant) 
+-- Q-2A. Educator, Consultant and Company query (PostgreSQL SPECIFIC variant) 
 -- JOIN(INNER) + LEFT JOIN
 -- ==========================================
 \echo ''
 \echo '================================='
 \echo 'Query 2A: Educator status (Consultants + Employees)'
-\echo 'Purpose: Identifying consultants using Boolean logic (IS NOT NULL, POSTGRESQL SPECIFIC variant)'
+\echo 'Purpose: Identifying consultants using Boolean logic (IS NOT NULL, PostgreSQL SPECIFIC variant)'
 \echo '================================='
 SELECT
   p.first_name, p.last_name, e.competence_area,

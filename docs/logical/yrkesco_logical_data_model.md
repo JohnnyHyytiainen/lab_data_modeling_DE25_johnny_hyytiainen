@@ -36,7 +36,7 @@ För att kunna hantera dataintegriteten kring personer och roller så valde jag 
 
   - Fördelen är detta: Det eliminerar behovet av redundanta ID kolumner som Surrogate Keys ger och garanterar en 1:1(one to one) relation. En **student** är EN **person**, en **employee** är EN **person** etc.  
 
-- Arvskedjan: Konsulter hanteras som en förlängning av `educator`(utbildare) -> `consultant`. Det gör att YrkCo kan skilja på t.ex `employee` löner och `consultant` arvoden utan några NULL values.
+- Arvskedjan: Konsulter hanteras som en förlängning av `educator`(utbildare) --> `consultant`. Det gör att YrkCo kan skilja på t.ex `employee` löner och `consultant` arvoden utan några NULL values.
 
 
 ## 2 - Beskrivningar om relationer:
@@ -60,7 +60,7 @@ För att kunna hantera dataintegriteten kring personer och roller så valde jag 
   - Min modell eliminerar transitiva beroenden genom följande design:  
 
     - **Exempel 1:** city och address finns i `FACILITY` inte i `CLASS`.  
-      - **Varför?** `City` beror på `facility_id` inte `class_id`. Om jag hade `class.city` skulle det vara ett transitivt beroende `(class -> facility -> city)`  
+      - **Varför?** `City` beror på `facility_id` inte `class_id`. Om jag hade `class.city` skulle det vara ett transitivt beroende `(class --> facility --> city)`  
     
     - **Exempel 2:** `employee_salary` finns i `EMPLOYEE` och inte i `PERSON`
       - **Varför?** `Salary` beror på `employment` och inte på att vara `person`. En `person` kan vara `student` (dvs, ingen `salary`) eller `consultant` och har då en `hourly_rate` istället.
