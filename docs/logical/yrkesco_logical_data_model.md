@@ -1,6 +1,4 @@
 # LDM (Logical Data Model) – YrkesCo
-
-
 ## ERD:
 ## Roller (shared primary key)
 - person(person_id) är en supertype.
