@@ -8,7 +8,7 @@
 ## This repository contains a complete data modeling workflow for a fictional polytechnic school called **YrkesCo**.
 ### The project moves from conceptualization to a fully containerized physical implementation with automated quality assurance.
 
-### Goals
+## Goals
 - Design a relational model (CDM --> LDM --> PDM) matching complex business requirements.  
 - Implement the physical model in **PostgreSQL** using **Docker**.  
 - Ensure **Data Integrity** through strict constraints and Sanity Checks.  
@@ -31,7 +31,7 @@
 - Docker Compose
 - SQL (DDL / seed / queries)
 - dbdiagram (DBML --> PDM reference)
-- Mermaid + Lucidcharts exported diagrams
+- Mermaid + Lucidchart exported diagrams
 
 
 ## Quick Start
@@ -62,7 +62,7 @@
 ├─ docs/
 │  ├─ conceptual/
 │  │  ├─ erd_conceptual_final_mermaid.mmd   # final version of conceptual ERD written with mermaid
-│  │  ├─ erd_conceptual_final_v3.png        # final version of conceptual ERD made in lucidcharts
+│  │  ├─ erd_conceptual_final_v3.png        # final version of conceptual ERD made in lucidchart
 │  │  ├─ relationship_statements.md         # relationship statements for conceptual ERD written in Swedish
 │  │  ├─ entities_draft.md                  # written notes of my thought process prior to making conceptual ERD.
 │  │  ├─ conceptual_drafts/                 # drafts of conceptual ERD versions marked v1, v2.... ... 
@@ -70,7 +70,7 @@
 │  │
 │  ├─ logical/
 │  │  ├─ erd_logical_final_mermaid.mmd      # final version of logical ERD written with mermaid 
-│  │  ├─ erd_logical_final_v2.0.png         # final version of logical ERD made in lucidcharts
+│  │  ├─ erd_logical_final_v2.0.png         # final version of logical ERD made in lucidchart
 │  │  ├─ yrkesco_logical_data_model.md      # notes regarding final logical ERD explaining 3NF + super/subtypes
 │  │  └─ logical_drafts/                    # drafts of logical ERD versions marked v1, v2... ...
 │  │
