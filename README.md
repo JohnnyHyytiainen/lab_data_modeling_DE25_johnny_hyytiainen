@@ -89,12 +89,13 @@
 │  │  └─ bug_*.png                          # screenshots of discovered bug after 04_sanity_checks.sql and bug fixes.
 │  │
 │  ├─ runbook_docker.md                     # important docker commands to navigate easier in the CLI
-│  ├─ notes.md                              # document with collected sources, reference list.
 │  ├─ super_subtypes_shared_pk.png          # own made 'diagram' to visualize super/subtypes and shared PKs better
 │  ├─ surrogate_keys_usage.png              # own made 'diagram' to visualize the difference with surrogate keys/shared PKs
 │  ├─ lab_yrkesco.md                        # the lab written down in markdown
 │  └─ lab_yrkesco.pdf                       # the original lab in .pdf format
-│
+│ 
+│ 
+├─ notes.md                              # document with collected sources, reference list.
 │
 └─ README.md
 
