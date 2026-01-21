@@ -1,4 +1,8 @@
 # Data Modeling Lab — YrkesCo (PostgreSQL + Docker)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue?logo=postgresql)
+![Docker](https://img.shields.io/badge/Docker-Compose-blue?logo=docker)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Status](https://img.shields.io/badge/Status-Complete-success)
 
 **Lab for the Data Modeling course in the Data Engineer 2025 program at STI.**  
 ![Physical ER Diagram](docs/physical/erd_physical_final_dbml.png)
