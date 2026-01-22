@@ -1,6 +1,6 @@
 # LDM (Logical Data Model) – YrkesCo
 ## ERD:
-## Roller (shared primary key)
+## Roles (shared primary key)
 - person(person_id) är en supertype.
 - student.person_id = PK+FK --> person.person_id
 - employee.person_id = PK+FK --> person.person_id
@@ -8,22 +8,22 @@
 - person_sensitive.person_id = PK+FK --> person.person_id
 - consultant.person_id = PK+FK --> educator.person_id
 
-## Nyckelrelationer
+## Key relationships
 - student.class_id FK --> class.class_id (NOT NULL)
 - class.facility_id FK --> facility.facility_id (NOT NULL)
 - class.program_id FK --> program.program_id (NULLABLE för fristående klass)
 - class.class_managed_by_employee_person_id FK --> employee.person_id (NOT NULL)
 - program_course PK (program_id, course_id) med FK till program och course
 
-## Teaching assignment (triangel)
+## Teaching assignment (triangle)
 - teaching_assignment.class_id FK --> class.class_id (NOT NULL)
 - teaching_assignment.course_id FK --> course.course_id (NOT NULL)
 - teaching_assignment.educator_person_id FK --> educator.person_id (NOT NULL)
 - Constraint: UNIQUE(class_id, course_id, educator_person_id)
 
-## Dokumentation:
+## Documentation:
 
-## 1 - Mina designval: Person hierarkin (shared primary keys)  
+## 1 - My desig choices: Person hierarchy (shared primary keys)  
 För att kunna hantera dataintegriteten kring personer och roller så valde jag att använda mig av en **Supertype/subtype**struktur med delad primärnyckel (Shared PK)  
 
 - Person (min **supertype**) innehåller grunddatan med namn, email som är gemensam för alla.  
@@ -37,14 +37,14 @@ För att kunna hantera dataintegriteten kring personer och roller så valde jag 
 - Arvskedjan: Konsulter hanteras som en förlängning av `educator`(utbildare) --> `consultant`. Det gör att YrkCo kan skilja på t.ex `employee` löner och `consultant` arvoden utan några NULL values.
 
 
-## 2 - Beskrivningar om relationer:
+## 2 - Relationship descriptions:
 - `class` En klass tillhör en specifik **facility**(anläggning) och en `class` har exakt en utbildningsledare som är en `employee`.  
 
 - `program` och `course` Ett program består utav flera kurser och en kurs kan ingå i flera program. Det här löses med en junction table `program_course`.  
 
 - `teaching_assignment` Det här är mittpunkten för schemaläggning. Entiteten(tabellen) kopplar samman `class`, `course` och `educator` för att definiera **vem** det är som undervisar **vad** och **var**.
 
-## 3 - Normalisering (Mina argument för 1NF, 2NF och 3NF)
+## 3 - Normalization (My arguments to prove I achieve 1NF, 2NF and 3NF)
 - Min modell uppfyller 3NF(Tredje normalformen) genom följande: 
 
   - 1NF (Atomicity - Atomära värden).  
@@ -69,11 +69,11 @@ För att kunna hantera dataintegriteten kring personer och roller så valde jag 
   - Attributer som inte är nycklar är enbart beroende av **primärnyckeln(PK)**. T.ex `employee_salary` ligger i `employee` entiteten(tabellen) och är beroende av `employee`(anställningstabellen) och inte utav `person` entiteten(tabellen). `city` ligger i `facility` entiteten(tabellen) och inte i `class`. Den känsliga datan i databasen finns i `person_sensitive` entiteten(tabellen), detta fär att isolera beroendet och öka säkerheten av känslig data för att ej bryta mot **dataskyddsförordningen(GDPR)**. 
 
 
-## Business Rule: Student-Klass tilldelning
+## Business Rule: Student - Class assignment
 
-**Designbeslut:** `student.class_id` är NOT NULL enligt business rule.
+**Design decision:** `student.class_id` är NOT NULL enligt business rule.
 
-**Resonemang:**
+**Reasoning:**
 - YrkesCo registrerar endast studenter när en klass är bekräftad (minimikvot uppfylld)
 - Sökande utan klasstilldelning lagras endast i `person` tabellen.
 - När klass skapas --> blir sökande `student` poster med direkt FK.
