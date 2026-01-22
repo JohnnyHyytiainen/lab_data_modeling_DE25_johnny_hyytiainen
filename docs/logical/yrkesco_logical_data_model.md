@@ -7,6 +7,9 @@
 - educator.person_id = PK+FK --> person.person_id
 - person_sensitive.person_id = PK+FK --> person.person_id
 - consultant.person_id = PK+FK --> educator.person_id
+![Roles with super/subtypes and SHARED PK](super_subtypes_shared_pk_english.png)
+
+
 
 ## Key relationships
 - student.class_id FK --> class.class_id (NOT NULL)
