@@ -1,57 +1,33 @@
 # "Runbook" (playbook) for docker. My easy go to commands in mini-format.
+This document serves as a quick reference guide for managing the Docker environment and interacting with the PostgreSQL database. *(See output.md for more extensive command docs regarding this lab)*
 
-## 0) Check status on stack:  
-- `docker compose -f docker/docker-compose.yml --env-file docker/.env ps`  
+## 0) Panic Button (Nuke & Reset)
+- Use this only if you need to completely wipe the database and start fresh (ex, after a failed experiment).  
+**WARNING: This deletes all data volumes!**   
 
-## 0) Check logs:  
-- `docker logs -f lab_yrkesco_postgres`  
-
-## 0) Stop the stack:  
-- `docker compose -f docker/docker-compose.yml --env-file docker/.env down`  
-
-## 0) Nuke and reboot (new DB form scratch IF NEEDED):  
-**NOTE THAT THE DATA WILL BE REMOVED!!**
-- `docker compose -f docker/docker-compose.yml --env-file docker/.env down -v`  
-
-**This command removes the volume. THE ENTIRE VOLUME. DATA INCLUDED. BE AWARE**  
+- `docker compose -f docker/docker-compose.yml --env-file docker/.env down -v`
 
 
-## 1) Skapa och starta containern (om den inte redan är igång och kör)
-- `docker compose -f docker/docker-compose.yml --env-file docker/.env up -d`  
+## 1) Lifecycle management:
+- Basic commands to control the stack.  
+**Start the environment (Create and build):**
+  - `docker compose -f docker/docker-compose.yml --env-file docker/.env up -d`
 
-## 2) När du har en skapad container och vill spinna upp den (istället för att förlita sig på Docker.Desktop UI)  
-- `docker start <CONTAINER NAME>`  
+- Check status. Is it running?:
+  - `docker compose -f docker/docker-compose.yml --env-file docker/.env ps`
+- View logs (debug errors):
+  - `docker logs -f lab_yrkesco_postgres`
+- Stop the environment:
+  - `docker compose -f docker/docker-compose.yml --env-file docker/.env down`
+- Resume a stopped container (without rebuilding!):
+  - `docker start lab_yrkesco_postgres`
 
-  - (docker start 'CONTAINER NAME' är ett rent start kommando för din container)
+## To avoid Git Bash headaches(bypass path issues):
+- `docker exec -it lab_yrkesco_postgres bash -lc "psql -U <USERNAME> -d yrkesco_db -f /sql/02_seed.sql"`
 
-**Du kan använda dig utav steg 1) och steg 2) för att starta en redan skapad container. Allt beror på hur mycket du orkar skriva**
+- **OR** if you'd like to enter the container manually and run:
+  - `docker exec -it lab_yrkesco_postgres bash`  
+  - `psql -U <USERNAME> -d yrkesco_db -f /sql/02_seed.sql`
 
-## 3) Kör din fil(01_ddl.sql, 02_seed.sql, 03_queries.sql etc)  
-- `docker exec -it lab_yrkesco_postgres psql -U <USERNAME> -d yrkesco_db -f /sql/02_seed.sql`  
-
-**För att BYPASSA Git Bash path issues**  
-- `docker exec -it lab_yrkesco_postgres bash -lc "psql -U <USERNAME> -d yrkesco_db -f /sql/02_seed.sql"`  
-
-- `docker exec -it lab_yrkesco_postgres bash -lc "psql -U \$POSTGRES_USER -d \$POSTGRES_DB -f /sql/02_seed.sql"`
-
-**Alternativt om du vill gå in manuellt i containern och köra**  
-- `docker exec -it lab_yrkesco_postgres bash`  
-
-- `psql -U <USERNAME> -d yrkesco_db -f /sql/02_seed.sql`
-
-## Snabb sanity check av steg 3)
-- `docker exec -it lab_yrkesco_postgres psql -U <USERNAME> -d yrkesco_db -c "SELECT COUNT(*) AS persons FROM person;"` 
-
-- `docker exec -it lab_yrkesco_postgres psql -U <USERNAME> -d yrkesco_db -c "SELECT COUNT(*) AS classes FROM class;"`  
-
-- `docker exec -it lab_yrkesco_postgres psql -U <USERNAME> -d yrkesco_db -c "SELECT COUNT(*) AS ta FROM teaching_assignment;"`
-
-
-## Kör queries (eller annan fil)
-- `docker exec -it lab_yrkesco_postgres psql -U <USERNAME> -d yrkesco_db -f /sql/03_queries.sql`
-
-
-## 4) Kör min sanity-check för att bekräfta mina antaganden jag gjort i 03_queries.sql för att se om verkligheten stämmer överens med förväntad output i terminal.  
 **"Just because you're paranoid, it doesn't mean they(the bugs) aren't after you"**  - Joseph Heller
 
-- `$ docker exec -it lab_yrkesco_postgres bash -lc "psql -U <USERNAME> -d yrkesco_db -f /sql/04_sanity_checks.sql"`
