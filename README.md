@@ -86,7 +86,9 @@
 │  │  └─ physical_drafts/
 │  │
 │  ├─ evidence/
-│  │  └─ output.md                          # documentation of expected outputs, commands, bug discovery + fixes
+│  │  ├─ output.md                          # documentation of expected outputs, commands, bug discovery + fixes
+│  │  ├─ design_decisions.md                # documentation regarding design decisions for this lab.
+│  │  └─ quality_assurances.md              # documentation regarding and reasining behind sanity_check script.
 │  │
 │  ├─ screenshots/
 │  │  ├─ query_*.png                        # screenshots of all ran queries and output from 03_queries.sql
