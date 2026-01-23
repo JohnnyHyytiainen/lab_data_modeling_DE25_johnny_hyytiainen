@@ -29,5 +29,5 @@ The entire lab is containerized using Docker Compose. The environment is designe
 
 * `02_seed.sql:` Uses `ON CONFLICT DO NOTHING` to allow safe re-runs without data duplication.
 
-* See `runbook_docker.md` for execution commands or, 
+* See `runbook_docker.md` for several quick start Docker commands or, 
 [Click Here for a step by step guide on how to replicate everything.](output.md)

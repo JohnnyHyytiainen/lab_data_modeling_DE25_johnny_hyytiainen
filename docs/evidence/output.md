@@ -241,8 +241,13 @@ Purpose: Linking number of Courses a Specific Program or Class has.
 
 `docker exec -it lab_yrkesco_postgres bash -lc "psql -U \$POSTGRES_USER -d \$POSTGRES_DB -f /sql/04_sanity_checks.sql"`
 
-- Example of output from running this script should be similar to:
+- Expected output from running this script should be similar to:
 ```
+######################################
+# YRKESCO DATABASE - SANITY CHECKS  #
+######################################
+
+=====================================
 Check 1: Referential Integrity
 Purpose: Verify no broken foreign keys
 Expected: 0 violations for all rows
@@ -258,19 +263,57 @@ Expected: 0 violations for all rows
 (6 rows)
 
 
+=====================================
+Check 2: Person Role Assignment
+Purpose: Verify all persons have at least one role
+Expected: 0 persons without role
+=====================================
+        check_type        | violations 
+--------------------------+------------
+ Persons without any role |          0
+(1 row)
+
 
 =====================================
 Check 3: Subtype Inheritance
 Purpose: Verify all subtypes reference valid person_id
 Expected: 0 violations
 =====================================
-             check_type              | violations
+             check_type              | violations 
 -------------------------------------+------------
  Students without person record      |          0
  Employees without person record     |          0
  Educators without person record     |          0
  Consultants without educator record |          0
 (4 rows)
+
+
+=====================================
+Check 4: Business Rules
+Purpose: Verify business logic constraints
+=====================================
+             check_type             | violations
+------------------------------------+------------
+ Students without sensitive data    |          0
+ Program classes without program_id |          0
+ Standalone classes with program_id |          0
+(3 rows)
+
+
+=====================================
+Check 5: Data Completeness
+Purpose: Verify minimum data exists for demo
+=====================================
+           metric           | count | status 
+----------------------------+-------+--------
+ Total facilities           |     2 | OK
+ Total programs             |     2 | OK
+ Total courses              |     6 | OK
+ Total students             |     2 | OK
+ Total educators            |     2 | OK
+ Total teaching assignments |     2 | OK
+(6 rows)
+
 
 =====================================
 Check 6: BONUS Features
@@ -280,6 +323,23 @@ Purpose: Verify all BONUS requirements are implemented
 ----------------------------------+-------+-------------
  Fast anställda educators (BONUS) |     1 | IMPLEMENTED
 (1 row)
+
+
+          feature          | count |   status
+---------------------------+-------+-------------
+ Fristående kurser (BONUS) |     1 | IMPLEMENTED
+(1 row)
+
+
+             feature              | num_cities |   status
+----------------------------------+------------+-------------
+ Multi-facility expansion (BONUS) |          2 | IMPLEMENTED
+(1 row)
+
+
+######################################
+# SANITY CHECKS COMPLETE            #
+######################################
 ```
 
 ## Known and fixed bug:
