@@ -23,20 +23,18 @@ WHERE p.person_id IS NULL;
 - 1:1(one to one) relationship maintained (person <--> student/employee)
 - Referential integrity intact (all FKs valid)
 
-[Screenshot: 04_sanity_checks.sql output showing everything is okay]
-
 This test driven approach ensures design compliance isn't just theoretical, it is continuously validated.
 
 
 ---
 
-**UNION ALL i sanity checks:**
-- **Kombinerar** multiple checks into one readable output
-- **Behåller** all rows (not removing "duplicates" like UNION)
+**UNION ALL in sanity checks:**
+- **Combines** multiple checks into one readable output
+- **Keeps** all rows (not removing "duplicates" like UNION)
 - **Requires** same column count + types across queries
 - **Creates** test suite summary (like Python unittest output)
 
-**Inte "två queries testade mot varandra"** det är **flera separata tests kombinerade för readability!**
+**Not "Two queries tested against eachother"** but **many separate tests combined for readability!**
 
 **Unit testing analogy:**
 ```
