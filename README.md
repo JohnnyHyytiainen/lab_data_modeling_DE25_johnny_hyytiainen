@@ -61,7 +61,7 @@
 │  ├─ 01_ddl.sql
 │  ├─ 02_seed.sql
 │  ├─ 03_queries.sql
-│  └─ 04_sanity_checks.sql └─
+│  └─ 04_sanity_checks.sql 
 │
 ├─ docs/
 │  ├─ conceptual/
