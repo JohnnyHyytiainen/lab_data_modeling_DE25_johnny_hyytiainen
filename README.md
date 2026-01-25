@@ -61,7 +61,7 @@
 │  ├─ 01_ddl.sql
 │  ├─ 02_seed.sql
 │  ├─ 03_queries.sql
-│  └─ 04_sanity_checks.sql
+│  └─ 04_sanity_checks.sql └─
 │
 ├─ docs/
 │  ├─ conceptual/
@@ -76,7 +76,8 @@
 │  │  ├─ erd_logical_final_mermaid.mmd      # final version of logical ERD written with mermaid 
 │  │  ├─ erd_logical_final_v2.0.png         # final version of logical ERD made in lucidchart
 │  │  ├─ yrkesco_logical_data_model.md      # notes regarding final logical ERD explaining 3NF + super/subtypes
-│  │  └─ logical_drafts/                    # drafts of logical ERD versions marked v1, v2... ...
+│  │  ├─ logical_drafts/                    # drafts of logical ERD versions marked v1, v2... ...
+│  │  └─ super_subtypes_shared_pk_eng.png   # translated version of super_subtypes_shared_pk from /docs folder.
 │  │
 │  ├─ physical/
 │  │  ├─ erd_physical_final_v1.dbml         # final version of physical ERD made with .dbml file
@@ -88,7 +89,12 @@
 │  ├─ evidence/
 │  │  ├─ output.md                          # documentation of expected outputs, commands, bug discovery + fixes
 │  │  ├─ design_decisions.md                # documentation regarding design decisions for this lab.
+<<<<<<< HEAD
 │  │  └─ quality_assurances.md              # documentation regarding and reasoning behind sanity_check script.
+=======
+│  │  ├─ yrkesco_lab_presentation_v2.pdf    # lab presentation as assigned in the labs requirements
+│  │  └─ quality_assurances.md              # documentation regarding and reasining behind sanity_check script.
+>>>>>>> b8302e0 (chore(docs): updated README folder-tree to properly represent current folders and files)
 │  │
 │  ├─ screenshots/
 │  │  ├─ query_*.png                        # screenshots of all ran queries and output from 03_queries.sql
