@@ -89,12 +89,9 @@
 │  ├─ evidence/
 │  │  ├─ output.md                          # documentation of expected outputs, commands, bug discovery + fixes
 │  │  ├─ design_decisions.md                # documentation regarding design decisions for this lab.
-<<<<<<< HEAD
 │  │  └─ quality_assurances.md              # documentation regarding and reasoning behind sanity_check script.
-=======
 │  │  ├─ yrkesco_lab_presentation_v2.pdf    # lab presentation as assigned in the labs requirements
 │  │  └─ quality_assurances.md              # documentation regarding and reasining behind sanity_check script.
->>>>>>> b8302e0 (chore(docs): updated README folder-tree to properly represent current folders and files)
 │  │
 │  ├─ screenshots/
 │  │  ├─ query_*.png                        # screenshots of all ran queries and output from 03_queries.sql
@@ -110,7 +107,6 @@
 ├─ notes.md                              # document with collected sources, reference list.
 │
 └─ README.md
-
 ```
 
 ### [Sources - for full Academic transparency and Academic integrity click here](notes.md)
